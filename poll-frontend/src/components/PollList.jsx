@@ -17,14 +17,29 @@ useEffect(() => {
 return (
            <>
             {
-               polls.map((poll) => (
-                   <h2 key= {poll.id}>
-                       {poll.question}
-                       </h2>
+                polls.map((poll) => (
 
-                   ))
-                }
+                    <div key={poll.id}>
+
+                        <h3>{poll.questions}</h3>
+
+                        {
+                            poll.options.map((option, index) => (
+
+                                <p key={index}>
+
+                                    {option.voteOption}
+
+                                </p>
+
+                            ))
+                        }
+
+                    </div>
+
+                ))
+            }
              </>
-           );
+          );
 }
 export default PollList;
