@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/vote")
+@RequestMapping("/api/poll")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class PollController {
 
     private final PollService pollService;
@@ -34,7 +35,7 @@ public class PollController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/vote")
     public void vote(@RequestBody Vote vote) {
         pollService.vote(vote.getPollId(),vote.getOptionIndex());
 
