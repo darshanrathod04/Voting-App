@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Vote {
 
-    private Long PollId;
+    private Long pollId;
 
-    private int OptionIndex;
+    private int optionIndex;
 }

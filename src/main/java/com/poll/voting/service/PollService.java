@@ -5,7 +5,6 @@ import com.poll.voting.model.Poll;
 import com.poll.voting.repository.PollRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public class PollService {
 
     private final PollRepo pollRepo;
 
-    public Poll addPoll( Poll poll) {
+    public Poll addPoll(Poll poll) {
         return pollRepo.save(poll);
     }
 
@@ -26,22 +25,27 @@ public class PollService {
 
     public Optional<Poll> findByIds(Long id) {
         return pollRepo.findById(id);
-
     }
 
     public void vote(Long pollId, int optionIndex) {
 
-        Poll poll = pollRepo.findById(pollId).orElseThrow(() -> new RuntimeException("poll not found"));
+        Poll poll = pollRepo.findById(pollId)
+                .orElseThrow(() -> new RuntimeException("Poll not found with ID: " + pollId));
 
         List<OptionVote> options = poll.getOption();
 
         if (optionIndex < 0 || optionIndex >= options.size()){
-            throw new IllegalArgumentException("option index out of bounds");
-
+            throw new IllegalArgumentException("Selected option index is out of bounds");
         }
+
         OptionVote selectedOption = options.get(optionIndex);
 
-        selectedOption.setVoteOption(selectedOption.getVoteOption() + 1);
+        Long currentVotes = selectedOption.getVoteCount();
+        if (currentVotes == null) {
+            currentVotes = 0L;
+        }
+
+        selectedOption.setVoteCount(currentVotes + 1);
 
         pollRepo.save(poll);
     }
